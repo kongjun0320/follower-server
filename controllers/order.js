@@ -1,14 +1,19 @@
-const order = require("../models/order")
+const order = require('../models/order')
 
 class OrderCtl {
-
- async find(ctx) {
-  let { per_page = 7, page = 1 } = ctx.query
-  page = Math.max(ctx.query.page * 1, 1) - 1
-  const perPage = Math.max(per_page * 1, 1)
-  ctx.body = await order.find()
-    .limit(perPage)
-    .skip(page * perPage)
+  async find(ctx) {
+    let { per_page = 7, page = 1 } = ctx.query
+    page = Math.max(ctx.query.page * 1, 1) - 1
+    const perPage = Math.max(per_page * 1, 1)
+    const userList = await order
+      .find()
+      .limit(perPage)
+      .skip(page * perPage)
+    const total = await await order.countDocuments()
+    ctx.body = {
+      user: userList,
+      total
+    }
   }
 
   async findById(ctx) {
@@ -23,7 +28,8 @@ class OrderCtl {
       .filter((f) => f)
       .join(' ')
     const id = ctx.params.id
-    const findOrder = await order.findById(id)
+    const findOrder = await order
+      .findById(id)
       .select(selectFields)
       .populate(populateStr)
     if (!findOrder) {
@@ -33,7 +39,7 @@ class OrderCtl {
     }
   }
 
-  async create(ctx){
+  async create(ctx) {
     ctx.verifyParams({
       name: {
         type: 'string',
