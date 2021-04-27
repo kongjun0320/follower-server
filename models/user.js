@@ -19,6 +19,10 @@ const userSchema = new Schema({
   avator_url: {
     type: String
   },
+  image: {
+    type: String,
+    select: true
+  },
   gender: {
     type: String,
     default: 'male',

@@ -6,9 +6,14 @@ class ProductCtl {
   let { per_page = 7, page = 1 } = ctx.query
   page = Math.max(ctx.query.page * 1, 1) - 1
   const perPage = Math.max(per_page * 1, 1)
-  ctx.body = await product.find()
+  const productList = await product.find()
+  const total = await await product.countDocuments()
     .limit(perPage)
     .skip(page * perPage)
+    ctx.body = {
+      product: productList,
+      total
+    }
   }
 
   async findById(ctx) {
@@ -38,10 +43,6 @@ class ProductCtl {
       name: {
         type: 'string',
         required: true
-      },
-        type: {
-          type: 'string',
-          required: true
       }
     })
     const params = ctx.request.body
@@ -72,6 +73,10 @@ class ProductCtl {
     } else {
       ctx.body = findProduct
     }
+  }
+  async delete(ctx) {
+    await product.findByIdAndRemove(ctx.params.id)
+    ctx.status = 204
   }
 }
 

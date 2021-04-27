@@ -19,20 +19,21 @@ class UserCtl {
   }
 
   async findById(ctx) {
-    const { fields = '' } = ctx.query
-    const selectFields = fields
-      .split(';')
-      .filter((f) => f)
-      .map((f) => ' +' + f)
-      .join('')
-    const populateStr = fields
-      .split(';')
-      .filter((f) => f)
-      .join(' ')
+    // const { fields = '' } = ctx.query
+    // const selectFields = fields
+    //   .split(';')
+    //   .filter((f) => f)
+    //   .map((f) => ' +' + f)
+    //   .join('')
+    // const populateStr = fields
+    //   .split(';')
+    //   .filter((f) => f)
+    //   .join(' ')
     const id = ctx.params.id
+    // const findUser = await user.findById(id)
+    //   .select(selectFields)
+    //   .populate(populateStr)
     const findUser = await user.findById(id)
-      .select(selectFields)
-      .populate(populateStr)
     if (!findUser) {
       ctx.throw(404, 'user does not exist')
     } else {
@@ -53,6 +54,7 @@ class UserCtl {
     })
     const params = ctx.request.body
     const createUser = await new user(params).save()
+    ctx.body = createUser
     // const repeateUser = await user.findOne({ username: params.username })
     // if (repeateUser) {
     //   ctx.throw(409, 'user already exist')
@@ -156,7 +158,7 @@ class UserCtl {
     }
     const { _id, name } = loginUser
     const token = jsonWebToken.sign({ _id, name }, secret, { expiresIn: '1d' })
-    ctx.body = { token }
+    ctx.body = { token,  loginUser}
   }
 
   async delete(ctx) {
