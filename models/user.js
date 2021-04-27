@@ -14,7 +14,7 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    select: false
+    select: true
   },
   avator_url: {
     type: String
@@ -22,7 +22,7 @@ const userSchema = new Schema({
   gender: {
     type: String,
     default: 'male',
-    select: false
+    select: true
   },
   description: {
     type: String,

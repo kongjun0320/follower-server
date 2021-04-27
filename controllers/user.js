@@ -8,9 +8,14 @@ class UserCtl {
   let { per_page = 7, page = 1 } = ctx.query
   page = Math.max(ctx.query.page * 1, 1) - 1
   const perPage = Math.max(per_page * 1, 1)
-  ctx.body = await user.find()
+  const userList = await user.find()
     .limit(perPage)
     .skip(page * perPage)
+   const total = (await user.countDocuments());
+    ctx.body = {
+      user: userList,
+      total
+    }
   }
 
   async findById(ctx) {
@@ -47,13 +52,14 @@ class UserCtl {
       }
     })
     const params = ctx.request.body
-    const repeateUser = await user.findOne({ username: params.username })
-    if (repeateUser) {
-      ctx.throw(409, 'user already exist')
-    } else {
-      const createUser = await new user(params).save()
-      ctx.body = createUser
-    }
+    const createUser = await new user(params).save()
+    // const repeateUser = await user.findOne({ username: params.username })
+    // if (repeateUser) {
+    //   ctx.throw(409, 'user already exist')
+    // } else {
+    //   const createUser = await new user(params).save()
+    //   ctx.body = createUser
+    // }
   }
 
   async checkOwner(ctx, next) {
@@ -151,6 +157,11 @@ class UserCtl {
     const { _id, name } = loginUser
     const token = jsonWebToken.sign({ _id, name }, secret, { expiresIn: '1d' })
     ctx.body = { token }
+  }
+
+  async delete(ctx) {
+    await user.findByIdAndRemove(ctx.params.id)
+    ctx.status = 204
   }
 }
 
