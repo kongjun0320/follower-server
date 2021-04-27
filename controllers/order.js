@@ -79,6 +79,10 @@ class OrderCtl {
       ctx.body = findOrder
     }
   }
+  async delete(ctx) {
+    await order.findByIdAndRemove(ctx.params.id)
+    ctx.status = 204
+  }
 }
 
 module.exports = new OrderCtl()
