@@ -12,7 +12,7 @@ const categorySchema = new Schema({
     required: true
   },
   type: {
-    type: String,
+    type: Number,
     required: true,
   },
   foods: {

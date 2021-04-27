@@ -61,7 +61,7 @@ class CategoryCtl {
         required: false
       },
       type: {
-        type: 'string',
+        type: 'number',
         required: false
       }
     })
