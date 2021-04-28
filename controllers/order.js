@@ -9,7 +9,7 @@ class OrderCtl {
       .find()
       .limit(perPage)
       .skip(page * perPage)
-    const total = await await order.countDocuments()
+    const total =  await order.countDocuments()
     ctx.body = {
       user: userList,
       total

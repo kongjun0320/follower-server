@@ -6,10 +6,15 @@ class CategoryCtl {
   let { per_page = 7, page = 1 } = ctx.query
   page = Math.max(ctx.query.page * 1, 1) - 1
   const perPage = Math.max(per_page * 1, 1)
-  ctx.body = await category.find()
+  const total =  await category.countDocuments()
+  const userList = await category.find()
     .limit(perPage)
     .skip(page * perPage)
     .populate('foods')
+    ctx.body = {
+      user: userList,
+      total
+    }
   }
 
   async findById(ctx) {
@@ -73,6 +78,11 @@ class CategoryCtl {
     } else {
       ctx.body = findCategory
     }
+  }
+
+  async delete(ctx) {
+    await category.findByIdAndRemove(ctx.params.id)
+    ctx.status = 204
   }
 }
 

@@ -13,7 +13,12 @@ const categorySchema = new Schema({
   },
   type: {
     type: Number,
-    required: true,
+    required: true
+  },
+  description: {
+    type: String,
+    required: false,
+    default: '描述信息'
   },
   foods: {
     type: [

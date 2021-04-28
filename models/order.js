@@ -7,37 +7,50 @@ const orderSchema = new Schema({
     type: Number,
     select: false
   },
+  // 订单编号 用户  商品  商品图片 价格 电话 地址  下单时间
+  location: {
+    type: String,
+    required: false
+  },
+  phone: {
+    type: String,
+    required: false
+  },
+  paytime: {
+    type: String,
+    required: false
+  },
   name: {
     type: String,
-    required: true
+    required: false
   },
   description: {
     type: String,
-    required: true
+    required: false
   },
   info: {
     type: String,
-    required: true
+    required: false
   },
   image: {
     type: String,
-    required: true
+    required: false
   },
   price: {
     type: String,
-    required: true
+    required: false
   },
   oldPrice: {
     type: String,
-    required: true
+    required: false
   },
   count: {
     type: String,
-    required: true
+    required: false
   },
   sellCount: {
     type: String,
-    required: true
+    required: false
   }
 })
 
